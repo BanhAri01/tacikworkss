@@ -1,0 +1,17 @@
+Phase 0 done: project files created.
+Phase 1 done: Laravel 12 + Livewire/Volt/Flux starter kit, spatie roles (buyer on register, admin seeder via ADMIN_* env), email verification, seller_profiles + "Become a seller" (Volt) → admin approve/suspend, Blade panels /admin + /seller (NO Filament), public layout (header search, footer, mobile menu).
+Decisions: PHP 8.2 (XAMPP) → Laravel 12 not 13; MariaDB 10.4 in dev; intl+zip enabled in php.ini (backup php.ini.bak-designmarket); added seller_profiles.portfolio_url + approved_at.
+Tests: tests/Feature/SellerAccessTest.php (13) + starter auth tests green. Roles seeded via TestCase $seeder.
+Known: approval email is queued → needs `php artisan queue:work`; MAIL_MAILER=log; /search is a placeholder.
+Next: Phase 2 — catalog & upload (seller product CRUD in Blade, previews→WebP, moderation queue).
+Phase 2 done: catalog tables, seller product CRUD (Volt form, multi-preview → queued WebP thumb + watermarked 1600px, private zip on `products` disk, 200MB limit), submit → pending, admin moderation (approve/reject reason, feature, free of week), categories/tags/licenses CRUD. Editing text/images of a live product → back to review.
+Phase 3 done: home (featured/new/popular/free of week), /search + /category/{slug} (Scout db driver, filters, sorts), /item/{slug} (gallery, licenses, JSON-LD), /shop/{username} + follow, ?ref= & storefront 30-day cookie (dm_ref), sitemap.xml, robots.txt, OG/canonical meta.
+Phase 4 done: PayPal multiparty (payee = seller merchant, platform_fees = our fee, buyer pays processing fee 4.4%+30¢), seller "Connect PayPal" onboarding, cart (guest→user merge), seller coupons, idempotent capture/webhook (gateway_events), fee breakdown per item, ledger, emails, $0 free claims, downloads (15-min signed links, log), license PDF (dompdf). 89 tests green.
+Known: live needs PayPal Partner approval + PAYPAL_* env (BN code, partner merchant id, webhook id); queue:work required (previews, emails, webhooks); Livewire is v4 (starter kit); products_r2 disk needs league/flysystem-aws-s3-v3 (ask before install).
+Next: Phase 5 — seller sales list/chart/tax form, new file version → email buyers (payouts dropped: money goes direct).
+Phase 5 done: /seller/sales (fee breakdown, month filter, 12-month net chart, CSV), tax info form (signed, W-8BEN-style), shop profile (avatar/banner WebP), new zip version → email buyers with changelog.
+Phase 6 done: verified-buyer reviews + seller replies (rating_avg/reviews_count), favorites, collections (public/private), follow → new-product email (first publish only), bundles (cart + checkout), affiliates (?aff=, paid from platform fee), /verify/{code} + GET /api/v1/licenses/{code}.
+Phase 7 done: reports → admin takedown/dismiss, refunds via PayPal (seller capture + platform fee back, ledger reversal, access revoked), user suspension (logout + shop hidden), admin dashboard stats + chart, settings page (fees, processing fee, affiliate %, free of week), orders admin, affiliate payouts, throttles, cache headers, custom error pages. 107 tests green.
+Known: live PayPal needs Partner approval + refunds need "REFUND" & "PARTNER_FEE" features granted at onboarding; affiliate payouts are manual; queue:work required; avatars/banners processed synchronously.
+Next: polish/launch — real PayPal sandbox run-through, mail provider, R2 disk (needs league/flysystem-aws-s3-v3), Meilisearch when catalog grows.
+Demo data: php artisan migrate:fresh --seed (DemoSeeder, ~50s, skipped in production). All demo accounts: password.
